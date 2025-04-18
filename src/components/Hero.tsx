@@ -31,6 +31,14 @@ const Hero = () => {
     horizontalOffset: '0', // Centered horizontally
   };
   
+  // Add scroll function
+  const scrollToAbout = () => {
+    const aboutSection = document.getElementById('about');
+    if (aboutSection) {
+      aboutSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+  
   useEffect(() => {
     // Load model-viewer script if not already loaded
     if (!document.querySelector('script[src*="model-viewer.min.js"]')) {
@@ -60,27 +68,48 @@ const Hero = () => {
       @keyframes highlight-position {
         0% { 
           transform: translate(var(--offset-x), var(--offset-y)) scale(1);
-          border-color: rgba(255, 244, 226, 0.6);
         }
         25% { 
           transform: translate(var(--offset-x), var(--offset-y)) scale(1.2);
-          border-color: rgba(255, 244, 226, 1);
         }
         50% { 
           transform: translate(var(--offset-x), var(--offset-y)) scale(1);
-          border-color: rgba(255, 244, 226, 0.6);
         }
         75% { 
           transform: translate(var(--offset-x), var(--offset-y)) scale(1.2);
-          border-color: rgba(255, 244, 226, 1);
         }
         100% { 
           transform: translate(var(--offset-x), var(--offset-y)) scale(1);
-          border-color: rgba(255, 244, 226, 0.6);
         }
       }
       .highlight-animation {
         animation: highlight-position 4s ease-in-out;
+      }
+      
+      @keyframes finger-tap-animation {
+        0% { 
+          transform: translate(var(--offset-x), var(--offset-y)) scale(1) rotate(0deg);
+          opacity: 0.8;
+        }
+        25% { 
+          transform: translate(calc(var(--offset-x) + 5px), calc(var(--offset-y) + 5px)) scale(1.1) rotate(0deg);
+          opacity: 1;
+        }
+        50% { 
+          transform: translate(var(--offset-x), var(--offset-y)) scale(1) rotate(0deg);
+          opacity: 0.8;
+        }
+        75% { 
+          transform: translate(calc(var(--offset-x) + 5px), calc(var(--offset-y) + 5px)) scale(1.1) rotate(0deg);
+          opacity: 1;
+        }
+        100% { 
+          transform: translate(var(--offset-x), var(--offset-y)) scale(1) rotate(0deg);
+          opacity: 0.8;
+        }
+      }
+      .finger-tap-animation {
+        animation: finger-tap-animation 4s ease-in-out;
       }
     `;
     document.head.appendChild(styleSheet);
@@ -121,7 +150,7 @@ const Hero = () => {
   const models = [
     {
       id: 1,
-      position: 'top-[41.5%] right-[39%]',
+      position: 'top-[35.4%] right-[38%]',
       modelSrc: 'https://angle-3d-demo.myshopify.com/cdn/shop/3d/models/o/4acb33bc7cc53ea1/apple-watch.glb?v=0',
       scale: 'scale-[0.6]',
       rotation: 'rotate-90',
@@ -131,21 +160,18 @@ const Hero = () => {
     },
     {
       id: 2,
-      position: 'top-[28%] right-[25%]',
+      position: 'top-[21.4%] right-[27.4%]',
       modelSrc: 'https://cdn.shopify.com/3d/models/88174270d865823c/headphone_headset.glb',
       scale: 'scale-[1.4]',
       rotation: 'rotate-270',
       yOffset: 'translate-y-0',
       xOffset: 'translate-x-0',
       cameraOrbit: '0deg 98deg 105%',
-      highlight: true,
-      highlightSize: 80, // Larger square for headphones
-      highlightOffsetX: 0,
-      highlightOffsetY: 0,
+    
     },
     {
       id: 3,
-      position: 'top-[77%] right-[26%]',
+      position: 'top-[72%] right-[27.5%]',
       modelSrc: 'https://cdn.shopify.com/3d/models/f0733ecc7a32b9d8/iphone_16_pro_max.glb',
       scale: 'scale-[0.6]',
       rotation: 'rotate-0',
@@ -155,27 +181,35 @@ const Hero = () => {
     },
     {
       id: 4,
-      position: 'top-[80%] right-[39%]',
+      position: 'top-[74.7%] right-[38.5%]',
       modelSrc: 'https://cdn.shopify.com/3d/models/b705057628482aab/mechanical_keyboard_-_aesthetic.glb',
       scale: 'scale-[1]',
       rotation: 'rotate-0',
       yOffset: 'translate-y-0',
       xOffset: 'translate-x-0',
       cameraOrbit: '0deg 70deg 105%',
+        highlight: true,
+      highlightSize: 120, // Larger square for headphones
+      highlightOffsetX: 0,
+      highlightOffsetY: 0,
     },
     {
       id: 5,
-      position: 'top-[39.6%] left-[67%]',
+      position: 'top-[33.6%] left-[66.6%]',
       modelSrc: 'https://cdn.shopify.com/3d/models/97a034ad7547e534/chinese_vase.glb',
       cameraOrbit: '0deg 83deg',
       scale: 'scale-[0.69]',
       rotation: 'rotate-0',
       yOffset: 'translate-y-0',
       xOffset: 'translate-x-0',
+        highlight: true,
+      highlightSize: 160, // Larger square for headphones
+      highlightOffsetX: 0,
+      highlightOffsetY: 0,
     },
     {
       id: 6,
-      position: 'top-[26.7%] right-[39%]',
+      position: 'top-[20.5%] right-[38.3%]',
       modelSrc: 'https://cdn.shopify.com/3d/models/17856a3ec41e1217/microphone.glb',
       cameraOrbit: 'odeg 100deg',
       scale: 'scale-[0.65]',
@@ -189,17 +223,21 @@ const Hero = () => {
     },
     {
       id: 7,
-      position: 'top-[53%] right-[39%]',
+      position: 'top-[47%] right-[38.4%]',
       modelSrc: 'https://cdn.shopify.com/3d/models/122aa9e96161099f/cinema_camera.glb',
       cameraOrbit: '50deg 90deg',
       scale: 'scale-[1]',
       rotation: 'rotate-0',
       yOffset: 'translate-y-0',
       xOffset: 'translate-x-0',
+        highlight: true,
+      highlightSize: 120, // Larger square for headphones
+      highlightOffsetX: 0,
+      highlightOffsetY: 0,
     },
     {
       id: 8,
-      position: 'top-[52%] right-[26%]',
+      position: 'top-[46.5%] right-[27.5%]',
       modelSrc: 'https://cdn.shopify.com/3d/models/a0bc8bbb4b6024b5/air_jordan_1.glb',
       cameraOrbit: '50deg 94deg',
       scale: 'scale-[1.3]',
@@ -209,17 +247,21 @@ const Hero = () => {
     },
     {
       id: 9,
-      position: 'top-[67%] right-[26%]',
+      position: 'top-[61%] right-[27.3%]',
       modelSrc: 'https://cdn.shopify.com/3d/models/b8c47a616dcc3199/low_poly_car_-_cadillac_75_sedan_1953.glb',
       cameraOrbit: '50deg 94deg',
       scale: 'scale-[1]',
       rotation: 'rotate-0',
       yOffset: 'translate-y-0',
       xOffset: 'translate-x-0',
+        highlight: true,
+      highlightSize: 120, // Larger square for headphones
+      highlightOffsetX: 0,
+      highlightOffsetY: 0,
     },
     {
       id: 10,
-      position: 'top-[65.5%] right-[39%]',
+      position: 'top-[59.8%] right-[38.2%]',
       modelSrc: 'https://cdn.shopify.com/3d/models/b04d6ab77c573e10/jbl_xtreme_3.glb',
       cameraOrbit: '5deg 80deg',
       scale: 'scale-[1]',
@@ -230,11 +272,11 @@ const Hero = () => {
   ];
 
   return (
-    <section className="relative h-[100vh] overflow-hidden rounded-2xl">
+    <section className="relative h-[95vh] overflow-hidden rounded-2xl">
       {/* Background image container */}
       <div className="absolute inset-0 z-[1]">
         <img
-          src="/final.jpg"
+          src="/crop 2.png"
           alt="Illuminated wooden shelves"
           className="w-full h-full object-cover rounded-2xl"
         />
@@ -245,7 +287,7 @@ const Hero = () => {
         <div 
           className="absolute w-full h-full z-[10]"
           style={{ 
-            top: '12%',
+            top: '7%',
             right: '-14.1%',
             left: 'auto',
             bottom: 'auto',
@@ -267,29 +309,20 @@ const Hero = () => {
             rotation-per-second="0deg"
             interaction-prompt="none"
             camera-orbit="0deg 86deg 180%"
-            min-camera-orbit="auto auto 180%"
-            max-camera-orbit="auto auto 180%"
+            min-camera-orbit="0deg 86deg 180%"
+            max-camera-orbit="0deg 86deg 180%"
             disable-zoom
             disable-pan
+            interaction-policy="none"
+            touch-action="none"
+            pointer-events="none"
             ar-status="not-presenting"
             environment-image="neutral"
             exposure="0.7"
             shadow-intensity="0"
             field-of-view="45deg"
           >
-            <div 
-              style={{
-                position: 'absolute',
-                width: '100%',
-                height: '2px',
-                background: 'transparent',
-                bottom: '-5px',
-                left: 0,
-                right: 0,
-                zIndex: 10
-              }}
-              slot="shadow-root"
-            ></div>
+            <div slot="shadow-root"></div>
           </model-viewer>
         </div>
       )}
@@ -341,22 +374,22 @@ const Hero = () => {
               className={`absolute ${model.position} ${model.scale} ${model.rotation} ${model.yOffset} ${model.xOffset}`}
             >
               <div className="relative w-28 h-28">
-                {/* Square highlighting around the model */}
+                {/* Cursor hand click icon animation */}
                 {model.highlight && showHighlights && (
                   <div 
-                    className={`absolute border-[4px] border-[#fff4e2] bg-[#fff4e2]/10 z-[5] pointer-events-none
-                              ${animatingModels ? 'highlight-animation' : ''}`}
+                    className={`absolute z-[6] pointer-events-none ${animatingModels ? 'finger-tap-animation' : ''}`}
                     style={{
-                      '--offset-x': `calc(-50% + ${model.highlightOffsetX || 0}px)`,
-                      '--offset-y': `calc(-50% + ${model.highlightOffsetY || 0}px)`,
-                      width: `${model.highlightSize || 80}px`,
-                      height: `${model.highlightSize || 80}px`,
+                      '--offset-x': `calc(${(model.highlightOffsetX || 0) + 15}px)`,
+                      '--offset-y': `calc(${(model.highlightOffsetY || 0) - 15}px)`,
                       top: '50%',
                       left: '50%',
-                      transform: `translate(calc(-50% + ${model.highlightOffsetX || 0}px), calc(-50% + ${model.highlightOffsetY || 0}px))`,
-                      borderRadius: '4px'
+                      transform: `translate(calc(${(model.highlightOffsetX || 0) + 15}px), calc(${(model.highlightOffsetY || 0) - 15}px))`,
                     } as React.CSSProperties}
-                  ></div>
+                  >
+                    <svg className="h-11 w-11 text-[#fff4e2] drop-shadow-xl" viewBox="0 0 36 36" fill="currentColor">
+                      <path d="M30.4,17.6c-1.8-1.9-4.2-3.2-6.7-3.7c-1.1-0.3-2.2-0.5-3.3-0.6c2.8-3.3,2.3-8.3-1-11.1s-8.3-2.3-11.1,1s-2.3,8.3,1,11.1c0.6,0.5,1.2,0.9,1.8,1.1v2.2l-1.6-1.5c-1.4-1.4-3.7-1.4-5.2,0c-1.4,1.4-1.5,3.6-0.1,5l4.6,5.4c0.2,1.4,0.7,2.7,1.4,3.9c0.5,0.9,1.2,1.8,1.9,2.5v1.9c0,0.6,0.4,1,1,1h13.6c0.5,0,1-0.5,1-1v-2.6c1.9-2.3,2.9-5.2,2.9-8.1v-5.8C30.7,17.9,30.6,17.7,30.4,17.6z M8.4,8.2c0-3.3,2.7-5.9,6-5.8c3.3,0,5.9,2.7,5.8,6c0,1.8-0.8,3.4-2.2,4.5V7.9c-0.1-1.8-1.6-3.2-3.4-3.2c-1.8-0.1-3.4,1.4-3.4,3.2v5.2C9.5,12.1,8.5,10.2,8.4,8.2L8.4,8.2z M28.7,24c0.1,2.6-0.8,5.1-2.5,7.1c-0.2,0.2-0.4,0.4-0.4,0.7v2.1H14.2v-1.4c0-0.3-0.2-0.6-0.4-0.8c-0.7-0.6-1.3-1.3-1.8-2.2c-0.6-1-1-2.2-1.2-3.4c0-0.2-0.1-0.4-0.2-0.6l-4.8-5.7c-0.3-0.3-0.5-0.7-0.5-1.2c0-0.4,0.2-0.9,0.5-1.2c0.7-0.6,1.7-0.6,2.4,0l2.9,2.9v3l1.9-1V7.9c0.1-0.7,0.7-1.3,1.5-1.2c0.7,0,1.4,0.5,1.4,1.2v11.5l2,0.4v-4.6c0.1-0.1,0.2-0.1,0.3-0.2c0.7,0,1.4,0.1,2.1,0.2v5.1l1.6,0.3v-5.2l1.2,0.3c0.5,0.1,1,0.3,1.5,0.5v5l1.6,0.3v-4.6c0.9,0.4,1.7,1,2.4,1.7L28.7,24z" />
+                    </svg>
+                  </div>
                 )}
                 
                 {/* Model container */}
@@ -416,25 +449,31 @@ const Hero = () => {
       <div className="container mx-auto px-4 sm:px-6 h-full relative z-[20] pointer-events-none">
         <div className="flex flex-col justify-center h-full max-w-2xl">
           {selectedModel ? (
-            <h1 className="text-9xl font-bold text-[#fff4e2]/10 select-none">
+            <h1 className="text-8xl font-bold text-[#fff4e2]/10 select-none">
               ShopXAR
             </h1>
           ) : (
             <>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#fff4e2] mb-4 sm:mb-6 leading-tight">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#fff4e2] mb-4 leading-tight">
                 Product <span className="text-[#677870]">visualizations</span><br />
                 with <span className="text-[#677870]">3D</span> modeling<br />
                 services
               </h1>
-              <p className="text-[#fff4e2]/20 text-base sm:text-lg md:text-xl mb-6 sm:mb-8 max-w-xl">
+              <p className="text-[#fff4e2]/20 text-base sm:text-lg md:text-xl mb-6 max-w-xl">
                 Infuse unparalleled realism with 3D visualization where we comprehensively 
                 boast your business capabilities.
               </p>
               <div className="flex flex-wrap gap-3 sm:gap-4 relative pointer-events-auto">
-                <button className="bg-[#181819] text-[#fff4e2] px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-medium hover:bg-[#272425] transition-all duration-300">
+                <button 
+                  onClick={scrollToAbout}
+                  className="bg-[#181819] text-[#fff4e2] px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-medium hover:bg-[#272425] transition-all duration-300"
+                >
                   Request a sample
                 </button>
-                <button className="bg-[#fff4e2] text-[#181819] border border-[#181819] px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-medium hover:bg-[#677870] hover:text-[#fff4e2] hover:border-[#677870] transition-all duration-300">
+                <button 
+                  onClick={scrollToAbout}
+                  className="bg-[#fff4e2] text-[#181819] border border-[#181819] px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-medium hover:bg-[#677870] hover:text-[#fff4e2] hover:border-[#677870] transition-all duration-300"
+                >
                   Schedule now
                 </button>
               </div>

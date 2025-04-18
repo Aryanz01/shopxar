@@ -1,5 +1,6 @@
 import React from 'react';
 import { ShoppingBag, Code, Box } from 'lucide-react';
+import styles from './Compatibility.module.css';
 
 const Compatibility = () => {
   const platforms = [
@@ -11,8 +12,8 @@ const Compatibility = () => {
     { name: 'Magento', icon: ShoppingBag },
   ];
 
-  // Quadruple the platforms array for smoother infinite scroll
-  const allPlatforms = [...platforms, ...platforms, ...platforms, ...platforms];
+  // Double the platforms array for seamless loop
+  const allPlatforms = [...platforms, ...platforms];
 
   return (
     <section className="bg-[#181819] overflow-hidden py-24">
@@ -27,25 +28,47 @@ const Compatibility = () => {
         </div>
 
         <div className="relative w-full overflow-hidden">
-          <div className="animate-scroll-smooth flex space-x-16">
-            {allPlatforms.map((platform, index) => (
-              <div
-                key={`platform-${index}`}
-                className="flex flex-col items-center justify-center flex-shrink-0"
-              >
-                <div className="bg-transparent border border-[#677870]/10 p-8 rounded-3xl mb-4 group 
-                  hover:border-[#677870]/30 transition-all duration-500 hover:scale-110">
-                  <platform.icon 
-                    className="w-8 h-8 text-[#fff4e2]/30 
-                    group-hover:text-[#677870] transition-all duration-500 floating-icon" 
-                  />
+          <div className={styles.slider}>
+            <div className={styles.slideTrack}>
+              {/* First set of platforms */}
+              {platforms.map((platform, index) => (
+                <div
+                  key={`platform-${index}`}
+                  className="flex flex-col items-center justify-center mx-8"
+                >
+                  <div className="bg-transparent border border-[#677870]/10 p-8 rounded-3xl mb-4 group 
+                    hover:border-[#677870]/30 transition-all duration-500 hover:scale-110">
+                    <platform.icon 
+                      className="w-8 h-8 text-[#fff4e2]/30 
+                      group-hover:text-[#677870] transition-all duration-500" 
+                    />
+                  </div>
+                  <span className="text-[#fff4e2]/40 text-sm font-light tracking-wide
+                    group-hover:text-[#fff4e2] transition-all duration-500">
+                    {platform.name}
+                  </span>
                 </div>
-                <span className="text-[#fff4e2]/40 text-sm font-light tracking-wide
-                  group-hover:text-[#fff4e2] transition-all duration-500">
-                  {platform.name}
-                </span>
-              </div>
-            ))}
+              ))}
+              {/* Duplicate set for seamless loop */}
+              {platforms.map((platform, index) => (
+                <div
+                  key={`platform-duplicate-${index}`}
+                  className="flex flex-col items-center justify-center mx-8"
+                >
+                  <div className="bg-transparent border border-[#677870]/10 p-8 rounded-3xl mb-4 group 
+                    hover:border-[#677870]/30 transition-all duration-500 hover:scale-110">
+                    <platform.icon 
+                      className="w-8 h-8 text-[#fff4e2]/30 
+                      group-hover:text-[#677870] transition-all duration-500" 
+                    />
+                  </div>
+                  <span className="text-[#fff4e2]/40 text-sm font-light tracking-wide
+                    group-hover:text-[#fff4e2] transition-all duration-500">
+                    {platform.name}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

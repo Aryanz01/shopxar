@@ -1,0 +1,231 @@
+/* Grid background styles */
+.grid-background {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: #0A0A0A;
+    background-image: 
+      linear-gradient(to right, rgba(42, 42, 42, 0.1) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(42, 42, 42, 0.1) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  
+  /* Model viewer base styles */
+  model-viewer {
+    width: 100%;
+    height: 100%;
+    --poster-color: transparent;
+    --progress-mask: transparent;
+    --progress-bar-color: transparent;
+  }
+  
+  /* Interactive model container */
+  .interactive-model-container {
+    z-index: 20;
+    pointer-events: auto;
+  }
+  
+  /* Model viewer shadow effect */
+  .model-viewer-shadow {
+    --exposure: 0.9;
+    border-radius: 8px;
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.15));
+  }
+  
+  /* Expanded model overlay animations */
+  .expanded-model-overlay {
+    animation: fadeIn 0.3s ease-out;
+  }
+  
+  .expanded-model-content {
+    animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  
+  .expanded-model {
+    --exposure: 1;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @keyframes slideIn {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(0); }
+  }
+  
+  /* Custom styles for model-viewer internals */
+  model-viewer::part(default-progress-bar) {
+    display: none;
+  }
+  
+  model-viewer::part(default-ar-button) {
+    display: none;
+  }
+  
+  /* Ensure proper stacking and interaction */
+  .model-viewer-container {
+    position: relative;
+    z-index: 1;
+  }
+  
+  /* Improve touch interaction on mobile */
+  @media (hover: none) {
+    .interactive-model-container {
+      touch-action: none;
+    }
+  }
+  
+  .bg-radial-gradient {
+    background: radial-gradient(circle at center, var(--tw-gradient-from) 0%, var(--tw-gradient-to) 100%);
+  }
+  
+  /* Model hover and animation styles */
+  .model-container {
+    transform: scale(1);
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .model-container:hover {
+    transform: scale(1.1);
+  }
+  
+  /* Overlay animation */
+  @keyframes slideIn {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  .model-overlay {
+    animation: fadeIn 0.3s ease-out;
+  }
+  
+  .model-overlay-content {
+    animation: slideIn 0.3s ease-out;
+  }
+  
+  /* Shadow effect for models */
+  .model-shadow {
+    filter: drop-shadow(0px 10px 15px rgba(0, 0, 0, 0.3));
+  }
+  
+  /* Hero button styles */
+  .hero-button {
+    position: relative;
+    z-index: 40;
+    transform: scale(1);
+    transition: all 0.3s ease;
+  }
+  
+  .hero-button:hover {
+    transform: scale(1.05);
+  }
+  
+  /* Ensure buttons are always clickable */
+  .button-container {
+    position: relative;
+    z-index: 40;
+    pointer-events: auto;
+  }
+  
+  /* Override any potential pointer-event issues */
+  button {
+    pointer-events: auto !important;
+  }
+  
+  @keyframes scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(calc(-33.33% - 0px));
+    }
+  }
+  
+  .animate-scroll-smooth {
+    animation: scroll 30s linear infinite;
+    width: calc(300% + 60px); /* Triple width plus some buffer */
+  }
+  
+  .animate-scroll-smooth:hover {
+    animation-play-state: paused;
+  }
+  
+  .animate-scroll-slow {
+    animation: scroll 40s linear infinite;
+  }
+  
+  .animate-scroll-slow:hover {
+    animation-play-state: paused;
+  }
+  
+  .infinite-scroll {
+    animation: scroll 25s linear infinite;
+    width: fit-content;
+  }
+  
+  @keyframes scroll {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+  
+  /* Add floating animation for icons */
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0) rotate(0deg);
+    }
+    25% {
+      transform: translateY(-4px) rotate(3deg);
+    }
+    75% {
+      transform: translateY(4px) rotate(-3deg);
+    }
+  }
+  
+  .floating-icon {
+    animation: float 3s ease-in-out infinite;
+    transform-origin: center;
+  }
+  
+  /* Different timing for each icon to create variety */
+  .floating-icon:nth-child(2n) {
+    animation-duration: 4s;
+  }
+  
+  .floating-icon:nth-child(3n) {
+    animation-duration: 5s;
+  }
+  
+  /* Hover states */
+  .infinite-scroll:hover {
+    animation-play-state: paused;
+  }
+  
+  .infinite-scroll:hover .floating-icon {
+    animation-play-state: paused;
+  }
+  
+  /* Ensure smooth animation */
+  .infinite-scroll {
+    -webkit-font-smoothing: antialiased;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+  }

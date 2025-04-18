@@ -6,6 +6,7 @@ import LiveExamples from './components/LiveExamples';
 import Journey from './components/Journey';
 import Partners from './components/Partners';
 import FAQ from './components/FAQ';
+import AboutUs from './components/AboutUs';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <Journey />
       <Partners />
       <FAQ />
+      <AboutUs />
     </div>
   );
 }

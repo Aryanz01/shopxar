@@ -126,6 +126,38 @@ model-viewer {
   height: 100%;
   --poster-color: transparent;
   background-color: transparent;
+  --progress-bar-height: 0 !important;
+  --progress-mask: none !important;
+  --progress-bar-color: transparent !important;
+}
+
+/* Hide all model-viewer UI elements */
+model-viewer::part(default-progress-bar) {
+  display: none !important;
+}
+
+model-viewer::part(default-ar-button) {
+  display: none !important;
+}
+
+model-viewer::part(default-exit-fullscreen-button) {
+  display: none !important;
+}
+
+model-viewer::part(default-ar-prompt) {
+  display: none !important;
+}
+
+model-viewer::part(default-progress-bar) {
+  display: none !important;
+}
+
+/* Remove all model-viewer UI */
+.model-viewer-no-ui::part(default-progress-bar),
+.model-viewer-no-ui::part(default-ar-button),
+.model-viewer-no-ui::part(default-exit-fullscreen-button),
+.model-viewer-no-ui::part(default-ar-prompt) {
+  display: none !important;
 }
 
 /* Add styles for QR modal */
