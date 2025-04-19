@@ -15,6 +15,8 @@ type Model = {
   highlightSize?: number;
   highlightOffsetX?: number;
   highlightOffsetY?: number;
+  mobilePosition?: string; // Add mobile-specific positioning
+  mobileScale?: string; // Add mobile-specific scaling
 };
 
 const Hero = () => {
@@ -25,6 +27,7 @@ const Hero = () => {
   const [animatingModels, setAnimatingModels] = useState(false);
   const [showHighlights, setShowHighlights] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
   const expandedViewRef = useRef<HTMLDivElement>(null);
   const nextComponentRef = useRef<HTMLDivElement>(null);
   const topMarkerRef = useRef<HTMLDivElement>(null);
@@ -34,6 +37,17 @@ const Hero = () => {
     top: '6',
     horizontalOffset: '0',
   };
+  
+  // Check for mobile viewport
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
   
   useEffect(() => {
     // Load model-viewer script if not already loaded
@@ -106,6 +120,32 @@ const Hero = () => {
       }
       .finger-tap-animation {
         animation: finger-tap-animation 4s ease-in-out;
+      }
+
+      @media (max-width: 768px) {
+        .expanded-model-container {
+          width: 100vw !important;
+          height: 100vh !important;
+          margin: 0 !important;
+          top: 0 !important;
+          left: 0 !important;
+          transform: none !important;
+        }
+        
+        .expanded-model {
+          width: 100% !important;
+          height: 100% !important;
+        }
+
+        .model-container {
+          width: 80px !important;
+          height: 80px !important;
+        }
+
+        .shelf-container {
+          transform: scale(0.8) !important;
+          transform-origin: top center !important;
+        }
       }
     `;
     document.head.appendChild(styleSheet);
@@ -200,8 +240,10 @@ const Hero = () => {
     {
       id: 1,
       position: 'top-[35.4%] right-[38%]',
+      mobilePosition: 'top-[51.4%] right-[57%]',
       modelSrc: 'https://angle-3d-demo.myshopify.com/cdn/shop/3d/models/o/4acb33bc7cc53ea1/apple-watch.glb?v=0',
       scale: 'scale-[0.6]',
+      // mobileScale: 'scale-[1.1]',
       rotation: 'rotate-90',
       yOffset: 'translate-y-0',
       xOffset: 'translate-x-0',
@@ -210,8 +252,10 @@ const Hero = () => {
     {
       id: 2,
       position: 'top-[21.4%] right-[27.4%]',
+      mobilePosition: 'top-[43%] right-[26%]',
       modelSrc: 'https://cdn.shopify.com/3d/models/88174270d865823c/headphone_headset.glb',
       scale: 'scale-[1.4]',
+      mobileScale: 'scale-[1.1]',
       rotation: 'rotate-270',
       yOffset: 'translate-y-0',
       xOffset: 'translate-x-0',
@@ -221,8 +265,10 @@ const Hero = () => {
     {
       id: 3,
       position: 'top-[72%] right-[27.5%]',
+      mobilePosition: 'top-[73%] right-[26.7%]',
       modelSrc: 'https://cdn.shopify.com/3d/models/f0733ecc7a32b9d8/iphone_16_pro_max.glb',
       scale: 'scale-[0.6]',
+      //mobileScale: 'scale-[1]',
       rotation: 'rotate-0',
       yOffset: 'translate-y-0',
       xOffset: 'translate-x-0',
@@ -231,8 +277,10 @@ const Hero = () => {
     {
       id: 4,
       position: 'top-[74.7%] right-[38.5%]',
+      mobilePosition: 'top-[76%] right-[55%]',
       modelSrc: 'https://cdn.shopify.com/3d/models/b705057628482aab/mechanical_keyboard_-_aesthetic.glb',
       scale: 'scale-[1]',
+      mobileScale: 'scale-[0.9]',
       rotation: 'rotate-0',
       yOffset: 'translate-y-0',
       xOffset: 'translate-x-0',
@@ -245,9 +293,11 @@ const Hero = () => {
     {
       id: 5,
       position: 'top-[33.6%] left-[66.6%]',
+      mobilePosition: 'top-[50%] left-[57.8%]',
       modelSrc: 'https://cdn.shopify.com/3d/models/97a034ad7547e534/chinese_vase.glb',
       cameraOrbit: '0deg 83deg',
       scale: 'scale-[0.69]',
+      mobileScale: 'scale-[0.6]',
       rotation: 'rotate-0',
       yOffset: 'translate-y-0',
       xOffset: 'translate-x-0',
@@ -259,9 +309,11 @@ const Hero = () => {
     {
       id: 6,
       position: 'top-[20.5%] right-[38.3%]',
+      mobilePosition: 'top-[42%] right-[56.5%]',
       modelSrc: 'https://cdn.shopify.com/3d/models/17856a3ec41e1217/microphone.glb',
       cameraOrbit: 'odeg 100deg',
       scale: 'scale-[0.65]',
+      // mobileScale: 'scale-[0.9]',
       rotation: 'rotate-0',
       yOffset: 'translate-y-0',
       xOffset: 'translate-x-0',
@@ -273,6 +325,7 @@ const Hero = () => {
     {
       id: 7,
       position: 'top-[47%] right-[38.4%]',
+      mobilePosition: 'top-[59.2%] right-[56%]',
       modelSrc: 'https://cdn.shopify.com/3d/models/122aa9e96161099f/cinema_camera.glb',
       cameraOrbit: '50deg 90deg',
       scale: 'scale-[1]',
@@ -287,9 +340,11 @@ const Hero = () => {
     {
       id: 8,
       position: 'top-[46.5%] right-[27.5%]',
+      mobilePosition: 'top-[58.9%] right-[25%]',
       modelSrc: 'https://cdn.shopify.com/3d/models/a0bc8bbb4b6024b5/air_jordan_1.glb',
       cameraOrbit: '50deg 94deg',
       scale: 'scale-[1.3]',
+      mobileScale: 'scale-[0.9]',
       rotation: 'rotate-0',
       yOffset: 'translate-y-0',
       xOffset: 'translate-x-0',
@@ -297,6 +352,7 @@ const Hero = () => {
     {
       id: 9,
       position: 'top-[61%] right-[27.3%]',
+      mobilePosition: 'top-[67.5%] right-[25%]',
       modelSrc: 'https://cdn.shopify.com/3d/models/b8c47a616dcc3199/low_poly_car_-_cadillac_75_sedan_1953.glb',
       cameraOrbit: '50deg 94deg',
       scale: 'scale-[1]',
@@ -311,6 +367,7 @@ const Hero = () => {
     {
       id: 10,
       position: 'top-[59.8%] right-[38.2%]',
+      mobilePosition: 'top-[67%] right-[56%]',
       modelSrc: 'https://cdn.shopify.com/3d/models/b04d6ab77c573e10/jbl_xtreme_3.glb',
       cameraOrbit: '5deg 80deg',
       scale: 'scale-[1]',
@@ -331,16 +388,48 @@ const Hero = () => {
         />
       </div>
 
-      {/* Shelf 3D model in background - Fixed Position */}
+      {/* Content container - Moved to left for desktop */}
+      <div className={`container mx-auto px-4 sm:px-6 relative z-[20] pointer-events-none
+                      ${isMobile ? 'pt-12' : 'absolute left-0 top-0 w-1/2 h-full flex items-center'}`}>
+        <div className={`flex flex-col justify-center ${isMobile ? 'items-center text-center h-auto mb-12' : 'h-full'} max-w-2xl ${isMobile ? 'mx-auto' : ''}`}>
+          {selectedModel ? (
+            <h1 className={`text-6xl sm:text-8xl font-bold text-[#fff4e2]/10 select-none ${isMobile ? '' : 'text-left'}`}>
+              ShopXAR
+            </h1>
+          ) : (
+            <>
+              <h1 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-[#fff4e2] mb-4 leading-tight ${isMobile ? 'text-center' : 'text-left'}`}>
+                Product <span className="text-[#677870]">visualizations</span><br />
+                with <span className="text-[#677870]">3D</span> modeling<br />
+                services
+              </h1>
+              <p className={`text-[#fff4e2]/20 text-sm sm:text-base md:text-lg lg:text-xl mb-6 max-w-xl ${isMobile ? 'text-center mx-auto' : 'text-left'}`}>
+                Infuse unparalleled realism with 3D visualization where we comprehensively 
+                boast your business capabilities.
+              </p>
+              <div className={`flex flex-wrap gap-3 sm:gap-4 relative pointer-events-auto ${isMobile ? 'justify-center' : 'justify-start'}`}>
+                <button className="bg-[#181819] text-[#fff4e2] px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-medium hover:bg-[#272425] transition-all duration-300">
+                  Request a sample
+                </button>
+                <button className="bg-[#fff4e2] text-[#181819] border border-[#181819] px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-medium hover:bg-[#677870] hover:text-[#fff4e2] hover:border-[#677870] transition-all duration-300">
+                  Schedule now
+                </button>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+
+      {/* Shelf 3D model in background - Centered for mobile */}
       {modelsLoaded && (
         <div 
-          className="absolute w-full h-full z-[10]"
+          className="absolute w-full h-full z-[10] shelf-container"
           style={{ 
-            top: '7%',
-            right: '-14.1%',
-            left: 'auto',
+            top: isMobile ? '25%' : '7%',
+            right: isMobile ? '0%' : '-14.1%',
+            left: isMobile ? '0%' : 'auto',
             bottom: 'auto',
-            transform: `translateZ(-100px) rotate(0.3deg)`,
+            transform: `translateZ(-100px) rotate(0.3deg) ${isMobile ? 'scale(1.2)' : ''}`,
             transformOrigin: 'center center',
             position: 'absolute'
           }}
@@ -348,7 +437,7 @@ const Hero = () => {
           <model-viewer
             className="w-full h-full"
             style={{ 
-              transform: `scale(1.1)`, 
+              transform: `scale(${isMobile ? '1.3' : '1.1'})`, 
               transformOrigin: 'center center',
               display: 'block'
             }}
@@ -381,15 +470,15 @@ const Hero = () => {
         <div 
           className={`fixed z-[50] 
                       bg-gradient-to-r from-[#30221c]/90 to-[#3d2c20]/90 backdrop-blur-sm
-                      px-8 py-5 rounded-lg shadow-2xl border border-[#d9c2a7]/20
+                      px-4 sm:px-8 py-3 sm:py-5 rounded-lg shadow-2xl border border-[#d9c2a7]/20
                       transition-all duration-300 ease-in-out w-auto mx-auto
                       ${showTooltip ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
           style={{
             top: `${tooltipPosition.top}rem`,
             left: '50%',
             transform: `translateX(calc(-50% + ${tooltipPosition.horizontalOffset}px))`,
-            minWidth: '280px',
-            maxWidth: '400px'
+            minWidth: isMobile ? '240px' : '280px',
+            maxWidth: isMobile ? '320px' : '400px'
           }}
         >
           <div className="flex items-center justify-between gap-4">
@@ -420,11 +509,13 @@ const Hero = () => {
           {models.map((model) => (
             <div
               key={model.id}
-              className={`absolute ${model.position} ${model.scale} ${model.rotation} ${model.yOffset} ${model.xOffset} ${
-                selectedModel?.id === model.id ? 'opacity-0 pointer-events-none' : ''
-              } transition-opacity duration-300`}
+              className={`absolute ${isMobile ? model.mobilePosition || model.position : model.position} 
+                         ${isMobile ? model.mobileScale || model.scale : model.scale} 
+                         ${model.rotation} ${model.yOffset} ${model.xOffset} 
+                         ${selectedModel?.id === model.id ? 'opacity-0 pointer-events-none' : ''} 
+                         transition-opacity duration-300`}
             >
-              <div className="relative w-28 h-28">
+              <div className={`relative ${isMobile ? 'w-48 h-48' : 'w-28 h-28'} model-container`}>
                 {/* Cursor hand click icon animation */}
                 {model.highlight && showHighlights && (
                   <div 
@@ -496,45 +587,11 @@ const Hero = () => {
         </div>
       )}
 
-      {/* Content container */}
-      <div className="container mx-auto px-4 sm:px-6 h-full relative z-[20] pointer-events-none">
-        <div className="flex flex-col justify-center h-full max-w-2xl">
-          {selectedModel ? (
-            <h1 className="text-8xl font-bold text-[#fff4e2]/10 select-none">
-              ShopXAR
-            </h1>
-          ) : (
-            <>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#fff4e2] mb-4 leading-tight">
-                Product <span className="text-[#677870]">visualizations</span><br />
-                with <span className="text-[#677870]">3D</span> modeling<br />
-                services
-              </h1>
-              <p className="text-[#fff4e2]/20 text-base sm:text-lg md:text-xl mb-6 max-w-xl">
-                Infuse unparalleled realism with 3D visualization where we comprehensively 
-                boast your business capabilities.
-              </p>
-              <div className="flex flex-wrap gap-3 sm:gap-4 relative pointer-events-auto">
-                <button className="bg-[#181819] text-[#fff4e2] px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-medium hover:bg-[#272425] transition-all duration-300">
-                  Request a sample
-                </button>
-                <button className="bg-[#fff4e2] text-[#181819] border border-[#181819] px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-medium hover:bg-[#677870] hover:text-[#fff4e2] hover:border-[#677870] transition-all duration-300">
-                  Schedule now
-                </button>
-              </div>
-            </>
-          )}
-        </div>
-      </div>
-
-      {/* Top marker */}
-      <div ref={topMarkerRef} className="absolute top-0 w-full h-1" />
-
-      {/* Expanded model viewer overlay */}
+      {/* Expanded model viewer overlay - Moved to left for desktop */}
       {selectedModel && (
         <div 
           ref={expandedViewRef}
-          className="fixed inset-0 z-[100] flex items-center justify-start"
+          className="fixed inset-0 z-[100]  expanded-model-container"
           style={{ 
             opacity: 1 - scrollProgress,
             transition: 'opacity 0.3s ease-in-out',
@@ -545,17 +602,19 @@ const Hero = () => {
           }}
         >
           <div 
-            className="ml-[190px] mt-[150px] w-[500px] h-[500px] bg-transparent relative"
+            className={`${isMobile ? 'w-[60%] h-[60%]' : 'w-[500px] h-[500px]'} bg-transparent relative`}
             style={{ 
               transform: `scale(${1 - scrollProgress * 0.2})`,
-              transition: 'transform 0.3s ease-in-out'
+              transition: 'transform 0.3s ease-in-out',
+              position: 'relative',
+              margin: isMobile ? 'auto' : '0 0 0 10%'
             }}
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close button */}
             <button
               onClick={() => setSelectedModel(null)}
-              className="absolute -top-2 -right-2 p-2 rounded-full bg-[#30221c]/50 hover:bg-[#30221c]/70 transition-colors duration-200 z-10"
+              className="absolute top-4 right-4 p-2 rounded-full bg-[#30221c]/50 hover:bg-[#30221c]/70 transition-colors duration-200 z-10"
               style={{ opacity: 1 - scrollProgress }}
             >
               <svg
@@ -577,7 +636,7 @@ const Hero = () => {
             <div className="relative w-full h-full">
               {/* Expanded instructions */}
               <div 
-                className="absolute bottom-full left-0 mb-4 bg-[#30221c]/90 backdrop-blur-sm px-4 py-2 rounded-lg text-[#fff4e2] text-sm border border-[#d9c2a7]/20"
+                className={`absolute ${isMobile ? 'bottom-full left-0 mb-4' : 'top-4 left-4'} bg-[#30221c]/90 backdrop-blur-sm px-4 py-2 rounded-lg text-[#fff4e2] text-sm border border-[#d9c2a7]/20`}
                 style={{ 
                   opacity: 1 - scrollProgress,
                   transition: 'opacity 0.3s ease-in-out'
@@ -630,6 +689,9 @@ const Hero = () => {
           </div>
         </div>
       )}
+
+      {/* Top marker */}
+      <div ref={topMarkerRef} className="absolute top-0 w-full h-1" />
 
       {/* Next component marker */}
       <div ref={nextComponentRef} className="absolute bottom-0 w-full h-1" />
