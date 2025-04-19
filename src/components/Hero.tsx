@@ -31,14 +31,6 @@ const Hero = () => {
     horizontalOffset: '0', // Centered horizontally
   };
   
-  // Add scroll function
-  const scrollToAbout = () => {
-    const aboutSection = document.getElementById('about');
-    if (aboutSection) {
-      aboutSection.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-  
   useEffect(() => {
     // Load model-viewer script if not already loaded
     if (!document.querySelector('script[src*="model-viewer.min.js"]')) {
@@ -371,7 +363,9 @@ const Hero = () => {
           {models.map((model) => (
             <div
               key={model.id}
-              className={`absolute ${model.position} ${model.scale} ${model.rotation} ${model.yOffset} ${model.xOffset}`}
+              className={`absolute ${model.position} ${model.scale} ${model.rotation} ${model.yOffset} ${model.xOffset} ${
+                selectedModel?.id === model.id ? 'opacity-0 pointer-events-none' : ''
+              } transition-opacity duration-300`}
             >
               <div className="relative w-28 h-28">
                 {/* Cursor hand click icon animation */}
@@ -464,16 +458,10 @@ const Hero = () => {
                 boast your business capabilities.
               </p>
               <div className="flex flex-wrap gap-3 sm:gap-4 relative pointer-events-auto">
-                <button 
-                  onClick={scrollToAbout}
-                  className="bg-[#181819] text-[#fff4e2] px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-medium hover:bg-[#272425] transition-all duration-300"
-                >
+                <button className="bg-[#181819] text-[#fff4e2] px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-medium hover:bg-[#272425] transition-all duration-300">
                   Request a sample
                 </button>
-                <button 
-                  onClick={scrollToAbout}
-                  className="bg-[#fff4e2] text-[#181819] border border-[#181819] px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-medium hover:bg-[#677870] hover:text-[#fff4e2] hover:border-[#677870] transition-all duration-300"
-                >
+                <button className="bg-[#fff4e2] text-[#181819] border border-[#181819] px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-medium hover:bg-[#677870] hover:text-[#fff4e2] hover:border-[#677870] transition-all duration-300">
                   Schedule now
                 </button>
               </div>

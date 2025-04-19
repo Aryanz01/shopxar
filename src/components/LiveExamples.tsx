@@ -212,7 +212,7 @@ export default function LiveExamples() {
           <h2 className="text-[#677870] text-8xl font-bold leading-none">
             Live
           </h2>
-          <h2 className="text-[#fff4e2] text-8xl font-bold  leading-none">
+          <h2 className="text-white text-8xl font-bold  leading-none">
             Examples.
           </h2>
         </div>
