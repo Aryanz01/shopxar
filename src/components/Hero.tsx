@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 // Add this type at the top of the file
 type Model = {
@@ -24,11 +24,15 @@ const Hero = () => {
   const [tooltipDismissed, setTooltipDismissed] = useState(false);
   const [animatingModels, setAnimatingModels] = useState(false);
   const [showHighlights, setShowHighlights] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const expandedViewRef = useRef<HTMLDivElement>(null);
+  const nextComponentRef = useRef<HTMLDivElement>(null);
+  const topMarkerRef = useRef<HTMLDivElement>(null);
   
   // Tooltip position configuration
   const tooltipPosition = {
-    top: '6', // Distance from top in pixels - moved higher to top of shelf
-    horizontalOffset: '0', // Centered horizontally
+    top: '6',
+    horizontalOffset: '0',
   };
   
   useEffect(() => {
@@ -138,6 +142,59 @@ const Hero = () => {
       };
     }
   }, [modelsLoaded, tooltipDismissed]);
+
+  useEffect(() => {
+    if (!nextComponentRef.current || !topMarkerRef.current || !selectedModel) return;
+
+    const nextComponentObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Start fading out when next component is visible
+            setScrollProgress(1);
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '0px 0px -20% 0px'
+      }
+    );
+
+    const topMarkerObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Fade back in only when we're back at the top
+            setScrollProgress(0);
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '0px 0px 0px 0px'
+      }
+    );
+
+    // Add scroll event listener for early fade out
+    const handleScroll = () => {
+      if (window.scrollY > 50) { // Start fading when scrolled 50px
+        setScrollProgress(Math.min(window.scrollY / 200, 1)); // Full fade at 200px
+      } else {
+        setScrollProgress(0);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    nextComponentObserver.observe(nextComponentRef.current);
+    topMarkerObserver.observe(topMarkerRef.current);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      nextComponentObserver.disconnect();
+      topMarkerObserver.disconnect();
+    };
+  }, [selectedModel]);
 
   const models = [
     {
@@ -470,21 +527,62 @@ const Hero = () => {
         </div>
       </div>
 
+      {/* Top marker */}
+      <div ref={topMarkerRef} className="absolute top-0 w-full h-1" />
+
       {/* Expanded model viewer overlay */}
       {selectedModel && (
         <div 
+          ref={expandedViewRef}
           className="fixed inset-0 z-[100] flex items-center justify-start"
+          style={{ 
+            opacity: 1 - scrollProgress,
+            transition: 'opacity 0.3s ease-in-out',
+            pointerEvents: scrollProgress > 0.5 ? 'none' : 'auto'
+          }}
           onClick={(e) => {
             if (e.target === e.currentTarget) setSelectedModel(null);
           }}
         >
           <div 
-            className="ml-[190px] mt-[150px] w-[500px] h-[500px] bg-transparent"
+            className="ml-[190px] mt-[150px] w-[500px] h-[500px] bg-transparent relative"
+            style={{ 
+              transform: `scale(${1 - scrollProgress * 0.2})`,
+              transition: 'transform 0.3s ease-in-out'
+            }}
             onClick={(e) => e.stopPropagation()}
           >
+            {/* Close button */}
+            <button
+              onClick={() => setSelectedModel(null)}
+              className="absolute -top-2 -right-2 p-2 rounded-full bg-[#30221c]/50 hover:bg-[#30221c]/70 transition-colors duration-200 z-10"
+              style={{ opacity: 1 - scrollProgress }}
+            >
+              <svg
+                className="w-5 h-5 text-[#fff4e2]/80"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+
             <div className="relative w-full h-full">
               {/* Expanded instructions */}
-              <div className="absolute bottom-full left-0 mb-4 bg-[#30221c]/90 backdrop-blur-sm px-4 py-2 rounded-lg text-[#fff4e2] text-sm border border-[#d9c2a7]/20 animate-fade-in">
+              <div 
+                className="absolute bottom-full left-0 mb-4 bg-[#30221c]/90 backdrop-blur-sm px-4 py-2 rounded-lg text-[#fff4e2] text-sm border border-[#d9c2a7]/20"
+                style={{ 
+                  opacity: 1 - scrollProgress,
+                  transition: 'opacity 0.3s ease-in-out'
+                }}
+              >
                 <div className="flex items-center gap-2">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z" clipRule="evenodd" />
@@ -509,6 +607,10 @@ const Hero = () => {
                 enable-pan="false"
                 reveal="auto"
                 field-of-view="35deg"
+                style={{ 
+                  opacity: 1 - scrollProgress,
+                  transition: 'opacity 0.3s ease-in-out'
+                }}
               >
                 <div 
                   style={{
@@ -528,6 +630,9 @@ const Hero = () => {
           </div>
         </div>
       )}
+
+      {/* Next component marker */}
+      <div ref={nextComponentRef} className="absolute bottom-0 w-full h-1" />
     </section>
   );
 };
