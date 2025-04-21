@@ -20,6 +20,17 @@ const ProductPopup: React.FC<ProductPopupProps> = ({ isOpen, onClose, product })
   const modelViewerRef = useRef<any>(null);
   const [cameraPosition, setCameraPosition] = useState({ orbit: '0deg 75deg 105%', target: '0m 0m 0m' });
   const [isScreenshotMode, setIsScreenshotMode] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     // Initialize model-viewer element
@@ -65,89 +76,91 @@ const ProductPopup: React.FC<ProductPopupProps> = ({ isOpen, onClose, product })
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-[#181819]/90">
-      <div className={`w-screen h-screen flex overflow-hidden ${isDarkMode ? 'bg-[#181819]' : 'bg-[#fff4e2]'}`}>
-        <div className="flex h-full w-full">
+    <div className="fixed inset-0 z-50 bg-[#181819]/90 overflow-hidden">
+      <div className={`w-full h-screen flex ${isDarkMode ? 'bg-[#181819]' : 'bg-[#fff4e2]'}`}>
+        <div className={`flex ${isMobile ? 'flex-col h-full w-full' : 'h-full w-full'}`}>
           {/* Left side - 3D Model Viewer */}
-          <div className="w-1/2 h-full border-r border-[#2A2A2C] relative">
+          <div className={`${isMobile ? 'w-full h-[50vh]' : 'w-1/2 h-full'} border-r border-[#2A2A2C] relative overflow-hidden`}>
             {/* Model Viewer Controls */}
-            <div className="absolute right-4 top-1/2 -translate-y-1/2 flex flex-col gap-2 z-10">
+            <div className={`absolute ${isMobile ? 'bottom-4 gap-4 left-1/2 -translate-x-1/2' : 'left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'} flex gap-2 z-10`}>
               <button
                 onClick={() => setIsDarkMode(!isDarkMode)}
-                className="p-3 rounded-xl bg-[#2A2A2C] text-[#fff4e2] hover:bg-[#677870] transition-colors"
+                className="p-2 sm:p-3 rounded-xl bg-[#2A2A2C] text-[#fff4e2] hover:bg-[#677870] transition-colors"
                 title={isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
               >
-                {isDarkMode ? <Sun className="w-6 h-6" /> : <Moon className="w-6 h-6" />}
+                {isDarkMode ? <Sun className="w-5 h-5 sm:w-6 sm:h-6" /> : <Moon className="w-5 h-5 sm:w-6 sm:h-6" />}
               </button>
               <button
                 onClick={() => handleZoom('out')}
                 disabled={zoomLevel >= 150}
-                className="p-3 rounded-xl bg-[#2A2A2C] text-[#fff4e2] hover:bg-[#677870] transition-colors disabled:opacity-50"
+                className="p-2 sm:p-3 rounded-xl bg-[#2A2A2C] text-[#fff4e2] hover:bg-[#677870] transition-colors disabled:opacity-50"
                 title="Zoom Out"
               >
-                <ZoomIn className="w-6 h-6" />
+                <ZoomIn className="w-5 h-5 sm:w-6 sm:h-6" />
               </button>
               <button
                 onClick={() => handleZoom('in')}
                 disabled={zoomLevel <= 50}
-                className="p-3 rounded-xl bg-[#2A2A2C] text-[#fff4e2] hover:bg-[#677870] transition-colors disabled:opacity-50"
+                className="p-2 sm:p-3 rounded-xl bg-[#2A2A2C] text-[#fff4e2] hover:bg-[#677870] transition-colors disabled:opacity-50"
                 title="Zoom In"
               >
-                <ZoomOut className="w-6 h-6" />
+                <ZoomOut className="w-5 h-5 sm:w-6 sm:h-6" />
               </button>
               <button
                 onClick={resetView}
-                className="p-3 rounded-xl bg-[#2A2A2C] text-[#fff4e2] hover:bg-[#677870] transition-colors"
+                className="p-2 sm:p-3 rounded-xl bg-[#2A2A2C] text-[#fff4e2] hover:bg-[#677870] transition-colors"
                 title="Reset View"
               >
-                <Undo className="w-6 h-6" />
+                <Undo className="w-5 h-5 sm:w-6 sm:h-6" />
               </button>
               <button
                 onClick={takeScreenshot}
-                className="p-3 rounded-xl bg-[#2A2A2C] text-[#fff4e2] hover:bg-[#677870] transition-colors"
+                className="p-2 sm:p-3 rounded-xl bg-[#2A2A2C] text-[#fff4e2] hover:bg-[#677870] transition-colors"
                 title="Take Screenshot"
               >
-                <Camera className="w-6 h-6" />
+                <Camera className="w-5 h-5 sm:w-6 sm:h-6" />
               </button>
             </div>
 
-            <model-viewer
-              ref={modelViewerRef}
-              src={product.modelSrc}
-              camera-controls
-              auto-rotate={!isScreenshotMode}
-              style={{ width: "100%", height: "100%" }}
-              background-color={isDarkMode ? "#181819" : "#fff4e2"}
-              exposure={isDarkMode ? "0.8" : "1"}
-              shadow-intensity="1"
-              shadow-softness="0.5"
-              camera-orbit={cameraPosition.orbit}
-              camera-target={cameraPosition.target}
-              field-of-view={`${zoomLevel}deg`}
-              min-field-of-view="50deg"
-              max-field-of-view="150deg"
-              interaction-prompt="none"
-            ></model-viewer>
+            <div className="w-full h-full">
+              <model-viewer
+                ref={modelViewerRef}
+                src={product.modelSrc}
+                camera-controls
+                auto-rotate={!isScreenshotMode}
+                style={{ width: "100%", height: "100%", maxWidth: "100vw" }}
+                background-color={isDarkMode ? "#181819" : "#fff4e2"}
+                exposure={isDarkMode ? "0.8" : "1"}
+                shadow-intensity="1"
+                shadow-softness="0.5"
+                camera-orbit={cameraPosition.orbit}
+                camera-target={cameraPosition.target}
+                field-of-view={`${zoomLevel}deg`}
+                min-field-of-view="50deg"
+                max-field-of-view="150deg"
+                interaction-prompt="none"
+              ></model-viewer>
+            </div>
           </div>
 
           {/* Right side - Product Details */}
-          <div className={`w-1/2 h-full flex flex-col ${isDarkMode ? 'bg-[#181819]' : 'bg-[#fff4e2]'}`}>
+          <div className={`${isMobile ? 'w-full h-[50vh]' : 'w-1/2 h-full'} flex flex-col ${isDarkMode ? 'bg-[#181819]' : 'bg-[#fff4e2]'}`}>
             {/* Header */}
-            <div className={`p-8 border-b ${isDarkMode ? 'border-[#2A2A2C]' : 'border-[#3d3938]/20'}`}>
+            <div className={`${isMobile ? 'p-4 w-full' : 'p-8'} border-b ${isDarkMode ? 'border-[#2A2A2C]' : 'border-[#3d3938]/20'}`}>
               <div className="flex justify-between items-start">
                 <div>
-                  <h2 className={`text-3xl font-bold ${isDarkMode ? 'text-[#fff4e2]' : 'text-[#3d3938]'}`}>
+                  <h2 className={`${isMobile ? 'text-xl' : 'text-3xl'} font-bold ${isDarkMode ? 'text-[#fff4e2]' : 'text-[#3d3938]'}`}>
                     {product.title}
                   </h2>
                   <div className="flex items-center gap-2 mt-2">
                     <div className="flex">
                       {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="w-5 h-5 text-[#677870] fill-current" />
+                        <Star key={i} className={`${isMobile ? 'w-4 h-4' : 'w-5 h-5'} text-[#677870] fill-current`} />
                       ))}
                     </div>
-                    <span className="text-[#677870]">(24 reviews)</span>
+                    <span className="text-[#677870] text-sm">(24 reviews)</span>
                   </div>
-                  <p className={`text-2xl font-bold ${isDarkMode ? 'text-[#fff4e2]' : 'text-[#3d3938]'} mt-4`}>
+                  <p className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold ${isDarkMode ? 'text-[#fff4e2]' : 'text-[#3d3938]'} mt-2 sm:mt-4`}>
                     {product.price}
                   </p>
                 </div>
@@ -155,26 +168,26 @@ const ProductPopup: React.FC<ProductPopupProps> = ({ isOpen, onClose, product })
                   onClick={onClose}
                   className="text-[#677870] hover:text-[#3d3938] transition-colors p-2"
                 >
-                  <X className="h-6 w-6" />
+                  <X className={`${isMobile ? 'h-5 w-5' : 'h-6 w-6'}`} />
                 </button>
               </div>
             </div>
 
             {/* Product Description */}
-            <div className="flex-1 p-8 overflow-y-auto">
-              <div className="space-y-6">
+            <div className={`flex-1 ${isMobile ? 'p-4 w-full' : 'p-8'} overflow-y-auto`}>
+              <div className="space-y-4 sm:space-y-6">
                 <div>
-                  <h3 className={`text-xl font-semibold ${isDarkMode ? 'text-[#fff4e2]' : 'text-[#3d3938]'} mb-4`}>
+                  <h3 className={`${isMobile ? 'text-lg' : 'text-xl'} font-semibold ${isDarkMode ? 'text-[#fff4e2]' : 'text-[#3d3938]'} mb-2 sm:mb-4`}>
                     Description
                   </h3>
-                  <p className="text-[#677870] text-lg leading-relaxed">{product.description}</p>
+                  <p className="text-[#677870] text-sm sm:text-lg leading-relaxed">{product.description}</p>
                 </div>
 
                 <div>
-                  <h3 className={`text-xl font-semibold ${isDarkMode ? 'text-[#fff4e2]' : 'text-[#3d3938]'} mb-4`}>
+                  <h3 className={`${isMobile ? 'text-lg' : 'text-xl'} font-semibold ${isDarkMode ? 'text-[#fff4e2]' : 'text-[#3d3938]'} mb-2 sm:mb-4`}>
                     Features
                   </h3>
-                  <ul className="space-y-2 text-[#677870] text-lg">
+                  <ul className="space-y-2 text-[#677870] text-sm sm:text-lg">
                     <li className="flex items-center gap-2">
                       <span className="w-2 h-2 rounded-full bg-[#677870]"></span>
                       Premium quality materials
@@ -195,10 +208,10 @@ const ProductPopup: React.FC<ProductPopupProps> = ({ isOpen, onClose, product })
                 </div>
 
                 <div>
-                  <h3 className={`text-xl font-semibold ${isDarkMode ? 'text-[#fff4e2]' : 'text-[#3d3938]'} mb-4`}>
+                  <h3 className={`${isMobile ? 'text-lg' : 'text-xl'} font-semibold ${isDarkMode ? 'text-[#fff4e2]' : 'text-[#3d3938]'} mb-2 sm:mb-4`}>
                     Specifications
                   </h3>
-                  <div className="grid grid-cols-2 gap-4 text-[#677870] text-lg">
+                  <div className="grid grid-cols-2 gap-4 text-[#677870] text-sm sm:text-lg">
                     <div>
                       <p className={`font-medium ${isDarkMode ? 'text-[#fff4e2]' : 'text-[#3d3938]'}`}>Material</p>
                       <p>Solid Wood</p>
@@ -221,20 +234,20 @@ const ProductPopup: React.FC<ProductPopupProps> = ({ isOpen, onClose, product })
             </div>
 
             {/* Bottom Actions */}
-            <div className={`p-4 border-t ${isDarkMode ? 'border-[#2A2A2C]' : 'border-[#3d3938]/20'}`}>
-              <div className="flex gap-4">
+            <div className={`${isMobile ? 'p-3 w-full' : 'p-4'} border-t ${isDarkMode ? 'border-[#2A2A2C]' : 'border-[#3d3938]/20'}`}>
+              <div className="flex gap-3 sm:gap-4">
                 <button className={`flex-1 ${
                   isDarkMode
                     ? 'bg-[#2A2A2C] text-[#fff4e2] hover:bg-[#677870]'
                     : 'bg-[#3d3938] text-[#fff4e2] hover:bg-[#677870]'
-                } py-4 px-8 rounded-xl font-medium text-lg transition-colors`}>
+                } py-3 sm:py-4 px-4 sm:px-8 rounded-xl font-medium text-sm sm:text-lg transition-colors`}>
                   Add to Cart
                 </button>
                 <button className={`flex-1 border-2 ${
                   isDarkMode
                     ? 'border-[#2A2A2C] text-[#fff4e2] hover:bg-[#677870] hover:border-[#677870]'
                     : 'border-[#3d3938] text-[#3d3938] hover:bg-[#677870] hover:border-[#677870] hover:text-[#fff4e2]'
-                } py-4 px-8 rounded-xl font-medium text-lg transition-colors`}>
+                } py-3 sm:py-4 px-4 sm:px-8 rounded-xl font-medium text-sm sm:text-lg transition-colors`}>
                   Buy Now
                 </button>
               </div>

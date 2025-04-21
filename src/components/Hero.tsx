@@ -389,12 +389,12 @@ const Hero = () => {
       </div>
 
       {/* Content container - Moved to left for desktop */}
-      <div className={`container mx-auto px-4 sm:px-6 relative z-[20] pointer-events-none
-                      ${isMobile ? 'pt-12' : 'absolute left-0 top-0 w-1/2 h-full flex items-center'}`}>
-        <div className={`flex flex-col justify-center ${isMobile ? 'items-center text-center h-auto mb-12' : 'h-full'} max-w-2xl ${isMobile ? 'mx-auto' : ''}`}>
+      <div className={`relative z-[20] pointer-events-none
+                      ${isMobile ? 'container mx-auto px-4 sm:px-6 pt-12' : 'absolute left-8 top-0 w-[40%] h-full flex items-center'}`}>
+        <div className={`flex flex-col ${isMobile ? 'items-center text-center h-auto mb-12' : 'items-start justify-center h-full'} ${isMobile ? 'mx-auto' : ''}`}>
           {selectedModel ? (
             <h1 className={`text-6xl sm:text-8xl font-bold text-[#fff4e2]/10 select-none ${isMobile ? '' : 'text-left'}`}>
-              ShopXAR
+              Shopxar
             </h1>
           ) : (
             <>
@@ -587,11 +587,11 @@ const Hero = () => {
         </div>
       )}
 
-      {/* Expanded model viewer overlay - Moved to left for desktop */}
+      {/* Expanded model viewer overlay */}
       {selectedModel && (
         <div 
           ref={expandedViewRef}
-          className="fixed inset-0 z-[100]  expanded-model-container"
+          className="fixed inset-0 z-[100] expanded-model-container flex items-center"
           style={{ 
             opacity: 1 - scrollProgress,
             transition: 'opacity 0.3s ease-in-out',
@@ -602,12 +602,13 @@ const Hero = () => {
           }}
         >
           <div 
-            className={`${isMobile ? 'w-[60%] h-[60%]' : 'w-[500px] h-[500px]'} bg-transparent relative`}
+            className={`${isMobile ? (selectedModel.id === 6 || selectedModel.id === 5 || selectedModel.id === 3 || selectedModel.id === 1 ? 'w-[40%] h-[40%]' : 'w-[70%] h-[70%]') : 'w-[500px] h-[500px]'} bg-transparent left-1/2 -translate-x-1/2 relative`}
             style={{ 
-              transform: `scale(${1 - scrollProgress * 0.2})`,
               transition: 'transform 0.3s ease-in-out',
-              position: 'relative',
-              margin: isMobile ? 'auto' : '0 0 0 10%'
+              transform: `translate(-50%, -84%) scale(${1 - scrollProgress * 0.2})`,
+              position: 'fixed',
+              top: '50%',
+              left: '50%'
             }}
             onClick={(e) => e.stopPropagation()}
           >

@@ -175,6 +175,18 @@ export default function LiveExamples() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [modelsLoaded, setModelsLoaded] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    // Check for mobile viewport
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     // Load model-viewer script if not already loaded
@@ -207,22 +219,22 @@ export default function LiveExamples() {
 
   return (
     <section className="bg-[#181819]">
-      <div className="text-left px-20 py-12">
+      <div className={`text-left ${isMobile ? 'px-4' : 'px-20'} py-12`}>
         <div className="flex flex-col items-start">
-          <h2 className="text-[#677870] text-8xl font-bold leading-none">
+          <h2 className={`text-[#677870] font-bold leading-none ${isMobile ? 'text-5xl' : 'text-8xl'}`}>
             Live
           </h2>
-          <h2 className="text-white text-8xl font-bold  leading-none">
+          <h2 className={`text-white font-bold leading-none ${isMobile ? 'text-5xl' : 'text-8xl'}`}>
             Examples.
           </h2>
         </div>
-        <p className="text-[#fff4e2] text-lg font-medium mt-4">
-          See our technology in action with these interactive demos
+        <p className={`text-[#fff4e2] ${isMobile ? 'text-base mt-2' : 'text-lg mt-4'} font-medium`}>
+          {isMobile ? 'Interactive 3D product demos' : 'See our technology in action with these interactive demos'}
         </p>
 
         {/* Category Navigation */}
-        <div className=" max-w-[423px] rounded-full bg-[#2A2A2C] py-2 mx-auto px-4 mb-16">
-          <div className="flex justify-center gap-4">
+        <div className={`${isMobile ? 'max-w-[310px] mt-8' : 'max-w-[429px] mt-16'} rounded-full bg-[#2A2A2C] py-2 mx-auto px-4 mb-8`}>
+          <div className={`flex justify-center ${isMobile ? 'gap-2' : 'gap-4'}`}>
             {sections.map((section, index) => (
               <button
                 key={section.id}
@@ -230,7 +242,7 @@ export default function LiveExamples() {
                   setActiveSectionIndex(index);
                   setActiveItemIndex(1);
                 }}
-                className={`px-6 py-3 text-base font-bold rounded-full
+                className={`${isMobile ? 'px-3 py-2 text-sm' : 'px-6 py-3 text-base'} font-bold rounded-full
                   ${index === activeSectionIndex
                     ? 'bg-[#677870] text-white scale-105'
                     : 'bg-transparent text-white hover:bg-[#677870]'
@@ -244,24 +256,24 @@ export default function LiveExamples() {
 
         {/* Carousel */}
         <div className="container mx-auto px-4 relative">
-          <div className="flex items-center justify-center gap-20 relative">
+          <div className={`flex items-center justify-center ${isMobile ? 'gap-0' : 'gap-20'} relative`}>
             {/* Navigation Arrows */}
             <button
               onClick={() => setActiveItemIndex(prevItemIndex)}
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-[#2A2A2C] p-2 rounded-full hover:bg-[#677870] transition-colors duration-300"
+              className={`${isMobile ? 'left-0' : 'left-4'} absolute top-1/2 -translate-y-1/2 z-10 bg-[#2A2A2C] p-2 rounded-full hover:bg-[#677870] transition-colors duration-300`}
             >
-              <ChevronLeft className="w-6 h-6 text-white" />
+              <ChevronLeft className={`${isMobile ? 'w-5 h-5' : 'w-6 h-6'} text-white`} />
             </button>
 
             <button
               onClick={() => setActiveItemIndex(nextItemIndex)}
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-[#2A2A2C] p-2 rounded-full hover:bg-[#677870] transition-colors duration-300"
+              className={`${isMobile ? 'right-0' : 'right-4'} absolute top-1/2 -translate-y-1/2 z-10 bg-[#2A2A2C] p-2 rounded-full hover:bg-[#677870] transition-colors duration-300`}
             >
-              <ChevronRight className="w-6 h-6 text-white" />
+              <ChevronRight className={`${isMobile ? 'w-5 h-5' : 'w-6 h-6'} text-white`} />
             </button>
 
-            {/* Previous Item */}
-            {prevItem && (
+            {/* Previous Item - Only show on desktop */}
+            {!isMobile && prevItem && (
               <div 
                 className="w-72 cursor-pointer hover:scale-105 transition-transform"
                 onClick={() => setActiveItemIndex(prevItemIndex)}
@@ -284,18 +296,14 @@ export default function LiveExamples() {
                     ></model-viewer>
                   )}
                 </div>
-                <div className="mt-2 text-center">
-                  <h3 className="text-white font-medium"></h3>
-                  <p className="text-[#677870]"></p>
-                </div>
               </div>
             )}
 
             {/* Active Item */}
             {activeProduct && (
-              <div className="w-[500px]">
+              <div className={isMobile ? "w-full max-w-[350px]" : "w-[500px]"}>
                 <div className="flex flex-col items-center gap-8">
-                  <div className="w-full rounded-xl p-4 h-[450px] flex items-center justify-center">
+                  <div className={`w-full rounded-xl p-4 ${isMobile ? 'h-[350px]' : 'h-[450px]'} flex items-center justify-center`}>
                     {modelsLoaded && (
                       <model-viewer
                         className="model-viewer-no-ui"
@@ -316,8 +324,9 @@ export default function LiveExamples() {
                   
                   <button
                     onClick={() => handleItemSelect(activeProduct)}
-                    className="w-64 bg-[#2A2A2C] text-white hover:bg-[#677870] px-8 py-4 rounded-xl 
-                      transition-all duration-300 font-medium hover:scale-105"
+                    className={`${isMobile ? 'w-60' : 'w-64'} bg-[#2A2A2C] text-white hover:bg-[#677870] 
+                      ${isMobile ? 'px-6 py-3 text-sm' : 'px-8 py-4 text-base'} rounded-xl 
+                      transition-all duration-300 font-medium hover:scale-105`}
                   >
                     Configure Product
                   </button>
@@ -325,8 +334,8 @@ export default function LiveExamples() {
               </div>
             )}
 
-            {/* Next Item */}
-            {nextItem && (
+            {/* Next Item - Only show on desktop */}
+            {!isMobile && nextItem && (
               <div 
                 className="w-72 cursor-pointer hover:scale-105 transition-transform"
                 onClick={() => setActiveItemIndex(nextItemIndex)}
@@ -348,10 +357,6 @@ export default function LiveExamples() {
                       reveal="auto"
                     ></model-viewer>
                   )}
-                </div>
-                <div className="mt-2 text-center">
-                  <h3 className="text-white font-medium"></h3>
-                  <p className="text-[#677870]"></p>
                 </div>
               </div>
             )}

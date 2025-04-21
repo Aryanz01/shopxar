@@ -3,21 +3,59 @@
     transform: translateX(0);
   }
   100% {
-    transform: translateX(calc(-250px * 6));
+    transform: translateX(calc(-100% / 2));
   }
 }
 
 .slider {
   background: transparent;
-  height: 200px;
+  height: auto;
   margin: auto;
   overflow: hidden;
   position: relative;
   width: 100%;
+  padding: 20px 0;
+}
+
+.slider::before,
+.slider::after {
+  content: "";
+  height: 100%;
+  position: absolute;
+  width: 200px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.slider::before {
+  left: 0;
+  background: linear-gradient(to right, #181819 0%, transparent 100%);
+}
+
+.slider::after {
+  right: 0;
+  background: linear-gradient(to left, #181819 0%, transparent 100%);
 }
 
 .slideTrack {
-  animation: scroll 25s linear infinite;
+  animation: scroll 40s linear infinite;
   display: flex;
-  width: calc(250px * 12);
+  width: fit-content;
+  gap: 2rem;
+}
+
+.slideTrack:hover {
+  animation-play-state: paused;
+}
+
+@media (max-width: 768px) {
+  .slider::before,
+  .slider::after {
+    width: 100px;
+  }
+
+  .slideTrack {
+    animation-duration: 30s;
+    gap: 1rem;
+  }
 } 
