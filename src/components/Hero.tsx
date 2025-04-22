@@ -393,7 +393,7 @@ const Hero = () => {
                       ${isMobile ? 'container mx-auto px-4 sm:px-6 pt-12' : 'absolute left-8 top-0 w-[40%] h-full flex items-center'}`}>
         <div className={`flex flex-col ${isMobile ? 'items-center text-center h-auto mb-12' : 'items-start justify-center h-full'} ${isMobile ? 'mx-auto' : ''}`}>
           {selectedModel ? (
-            <h1 className={`text-6xl sm:text-8xl font-bold text-[#fff4e2]/10 select-none ${isMobile ? '' : 'text-left'}`}>
+            <h1 className={`text-6xl sm:text-8xl py-5 font-bold text-[#fff4e2]/10 select-none ${isMobile ? '' : 'text-left'} -translate-y-4`}>
               Shopxar
             </h1>
           ) : (
@@ -591,24 +591,28 @@ const Hero = () => {
       {selectedModel && (
         <div 
           ref={expandedViewRef}
-          className="fixed inset-0 z-[100] expanded-model-container flex items-center"
+          className={`fixed inset-0 z-[100] expanded-model-container ${isMobile ? 'items-center' : 'items-start'}`}
           style={{ 
             opacity: 1 - scrollProgress,
             transition: 'opacity 0.3s ease-in-out',
-            pointerEvents: scrollProgress > 0.5 ? 'none' : 'auto'
+            pointerEvents: scrollProgress > 0.5 ? 'none' : 'auto',
+            display: 'flex',
+            justifyContent: isMobile ? 'center' : 'flex-start',
+            alignItems: 'center',
+            paddingLeft: isMobile ? '0' : '8rem'
           }}
           onClick={(e) => {
             if (e.target === e.currentTarget) setSelectedModel(null);
           }}
         >
           <div 
-            className={`${isMobile ? (selectedModel.id === 6 || selectedModel.id === 5 || selectedModel.id === 3 || selectedModel.id === 1 ? 'w-[40%] h-[40%]' : 'w-[70%] h-[70%]') : 'w-[500px] h-[500px]'} bg-transparent left-1/2 -translate-x-1/2 relative`}
+            className={`${isMobile ? (selectedModel.id === 6 || selectedModel.id === 5 || selectedModel.id === 3 || selectedModel.id === 1 ? 'w-[40%] h-[40%]' : 'w-[70%] h-[70%]') : 'w-[500px] h-[500px]'} bg-transparent ${isMobile ? 'left-1/2 -translate-x-1/2' : 'left-0'} relative`}
             style={{ 
               transition: 'transform 0.3s ease-in-out',
-              transform: `translate(-50%, -84%) scale(${1 - scrollProgress * 0.2})`,
+              transform: `translate(${isMobile ? '-50%, -84%' : '0, -50%'}) scale(${1 - scrollProgress * 0.2})`,
               position: 'fixed',
               top: '50%',
-              left: '50%'
+              left: isMobile ? '50%' : '8rem'
             }}
             onClick={(e) => e.stopPropagation()}
           >

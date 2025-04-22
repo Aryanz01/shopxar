@@ -82,7 +82,7 @@ const ProductPopup: React.FC<ProductPopupProps> = ({ isOpen, onClose, product })
           {/* Left side - 3D Model Viewer */}
           <div className={`${isMobile ? 'w-full h-[50vh]' : 'w-1/2 h-full'} border-r border-[#2A2A2C] relative overflow-hidden`}>
             {/* Model Viewer Controls */}
-            <div className={`absolute ${isMobile ? 'bottom-4 gap-4 left-1/2 -translate-x-1/2' : 'left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'} flex gap-2 z-10`}>
+            <div className={`absolute ${isMobile ? 'bottom-4 gap-4 left-1/2 -translate-x-1/2' : 'left-4 top-1/2 -translate-y-1/2'} flex ${isMobile ? 'flex-row' : 'flex-col'} gap-2 z-10`}>
               <button
                 onClick={() => setIsDarkMode(!isDarkMode)}
                 className="p-2 sm:p-3 rounded-xl bg-[#2A2A2C] text-[#fff4e2] hover:bg-[#677870] transition-colors"
