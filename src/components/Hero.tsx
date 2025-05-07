@@ -5,6 +5,7 @@ type Model = {
   id: number;
   position: string;
   modelSrc: string;
+  imageSrc: string;
   scale: string;
   rotation: string;
   yOffset: string;
@@ -239,36 +240,37 @@ const Hero = () => {
   const models = [
     {
       id: 1,
-      position: 'top-[35.4%] right-[38%]',
-      mobilePosition: 'top-[51.4%] right-[57%]',
+      position: 'top-[33.4%] right-[38%]',
+      mobilePosition: 'top-[50.1%] right-[57%]',
       modelSrc: 'https://angle-3d-demo.myshopify.com/cdn/shop/3d/models/o/4acb33bc7cc53ea1/apple-watch.glb?v=0',
-      scale: 'scale-[0.6]',
-      // mobileScale: 'scale-[1.1]',
-      rotation: 'rotate-90',
-      yOffset: 'translate-y-0',
+      imageSrc: '/images/products/watch.png',
+      scale: 'scale-[0.5]',
+      mobileScale: 'scale-[0.5]',
+      rotation: '',
+      yOffset: 'translate-y-3',
       xOffset: 'translate-x-0',
       cameraOrbit: '0deg 87deg 105%',
     },
     {
       id: 2,
-      position: 'top-[21.4%] right-[27.4%]',
-      mobilePosition: 'top-[43%] right-[26%]',
+      position: 'top-[22%] right-[25.4%]',
+      mobilePosition: 'top-[44.3%] right-[23%]',
       modelSrc: 'https://cdn.shopify.com/3d/models/88174270d865823c/headphone_headset.glb',
-      scale: 'scale-[1.4]',
-      mobileScale: 'scale-[1.1]',
+      imageSrc: '/images/products/headphones.png',
+      scale: 'scale-[0.8]',
+      mobileScale: 'scale-[0.7]',
       rotation: 'rotate-270',
       yOffset: 'translate-y-0',
       xOffset: 'translate-x-0',
       cameraOrbit: '0deg 98deg 105%',
-    
     },
     {
       id: 3,
-      position: 'top-[72%] right-[27.5%]',
+      position: 'top-[72%] right-[25.1%]',
       mobilePosition: 'top-[73%] right-[26.7%]',
       modelSrc: 'https://cdn.shopify.com/3d/models/f0733ecc7a32b9d8/iphone_16_pro_max.glb',
-      scale: 'scale-[0.6]',
-      //mobileScale: 'scale-[1]',
+      imageSrc: '/images/products/iphone.png',
+      scale: 'scale-[0.8]',
       rotation: 'rotate-0',
       yOffset: 'translate-y-0',
       xOffset: 'translate-x-0',
@@ -276,74 +278,78 @@ const Hero = () => {
     },
     {
       id: 4,
-      position: 'top-[74.7%] right-[38.5%]',
-      mobilePosition: 'top-[76%] right-[55%]',
+      position: 'top-[73.7%] right-[38.5%]',
+      mobilePosition: 'top-[74.5%] right-[55%]',
       modelSrc: 'https://cdn.shopify.com/3d/models/b705057628482aab/mechanical_keyboard_-_aesthetic.glb',
-      scale: 'scale-[1]',
-      mobileScale: 'scale-[0.9]',
+      imageSrc: '/images/products/keyboard.png',
+      scale: 'scale-[0.8]',
+      mobileScale: 'scale-[0.7]',
       rotation: 'rotate-0',
       yOffset: 'translate-y-0',
       xOffset: 'translate-x-0',
       cameraOrbit: '0deg 70deg 105%',
-        highlight: true,
-      highlightSize: 120, // Larger square for headphones
+      highlight: true,
+      highlightSize: 120,
       highlightOffsetX: 0,
       highlightOffsetY: 0,
     },
     {
       id: 5,
-      position: 'top-[33.6%] left-[66.6%]',
-      mobilePosition: 'top-[50%] left-[57.8%]',
+      position: 'top-[34.8%] left-[67.3%]',
+      mobilePosition: 'top-[51.5%] left-[57.8%]',
       modelSrc: 'https://cdn.shopify.com/3d/models/97a034ad7547e534/chinese_vase.glb',
+      imageSrc: '/images/products/vase.png',
       cameraOrbit: '0deg 83deg',
-      scale: 'scale-[0.69]',
-      mobileScale: 'scale-[0.6]',
+      scale: 'scale-[0.75]',
+      mobileScale: 'scale-[0.69]',
       rotation: 'rotate-0',
       yOffset: 'translate-y-0',
       xOffset: 'translate-x-0',
-        highlight: true,
-      highlightSize: 160, // Larger square for headphones
+      highlight: true,
+      highlightSize: 160,
       highlightOffsetX: 0,
       highlightOffsetY: 0,
     },
     {
       id: 6,
-      position: 'top-[20.5%] right-[38.3%]',
-      mobilePosition: 'top-[42%] right-[56.5%]',
+      position: 'top-[21.5%] right-[38.3%]',
+      mobilePosition: 'top-[43.8%] right-[56.5%]',
       modelSrc: 'https://cdn.shopify.com/3d/models/17856a3ec41e1217/microphone.glb',
+      imageSrc: '/images/products/microphone.png',
       cameraOrbit: 'odeg 100deg',
       scale: 'scale-[0.65]',
-      // mobileScale: 'scale-[0.9]',
       rotation: 'rotate-0',
       yOffset: 'translate-y-0',
       xOffset: 'translate-x-0',
       highlight: true,
-      highlightSize: 167, // Base size for microphone
+      highlightSize: 167,
       highlightOffsetY: 20,
       highlightOffsetX: 0,
     },
     {
       id: 7,
-      position: 'top-[47%] right-[38.4%]',
+      position: 'top-[48.4%] right-[38.4%]',
       mobilePosition: 'top-[59.2%] right-[56%]',
       modelSrc: 'https://cdn.shopify.com/3d/models/122aa9e96161099f/cinema_camera.glb',
+      imageSrc: '/images/products/camera.png',
       cameraOrbit: '50deg 90deg',
-      scale: 'scale-[1]',
+      scale: 'scale-[0.6]',
       rotation: 'rotate-0',
       yOffset: 'translate-y-0',
       xOffset: 'translate-x-0',
-        highlight: true,
-      highlightSize: 120, // Larger square for headphones
+      highlight: true,
+      highlightSize: 120,
       highlightOffsetX: 0,
       highlightOffsetY: 0,
     },
     {
       id: 8,
-      position: 'top-[46.5%] right-[27.5%]',
-      mobilePosition: 'top-[58.9%] right-[25%]',
+      position: 'top-[49%] right-[24.9%]',
+      mobilePosition: 'top-[60%] right-[25%]',
       modelSrc: 'https://cdn.shopify.com/3d/models/a0bc8bbb4b6024b5/air_jordan_1.glb',
+      imageSrc: '/images/products/shoes.png',
       cameraOrbit: '50deg 94deg',
-      scale: 'scale-[1.3]',
+      scale: 'scale-[0.9]',
       mobileScale: 'scale-[0.9]',
       rotation: 'rotate-0',
       yOffset: 'translate-y-0',
@@ -351,26 +357,28 @@ const Hero = () => {
     },
     {
       id: 9,
-      position: 'top-[61%] right-[27.3%]',
-      mobilePosition: 'top-[67.5%] right-[25%]',
+      position: 'top-[61%] right-[25.3%]',
+      mobilePosition: 'top-[67%] right-[25%]',
       modelSrc: 'https://cdn.shopify.com/3d/models/b8c47a616dcc3199/low_poly_car_-_cadillac_75_sedan_1953.glb',
+      imageSrc: '/images/products/car.png',
       cameraOrbit: '50deg 94deg',
-      scale: 'scale-[1]',
+      scale: 'scale-[0.65]',
       rotation: 'rotate-0',
       yOffset: 'translate-y-0',
       xOffset: 'translate-x-0',
-        highlight: true,
-      highlightSize: 120, // Larger square for headphones
+      highlight: true,
+      highlightSize: 120,
       highlightOffsetX: 0,
       highlightOffsetY: 0,
     },
     {
       id: 10,
-      position: 'top-[59.8%] right-[38.2%]',
+      position: 'top-[61%] right-[38.2%]',
       mobilePosition: 'top-[67%] right-[56%]',
       modelSrc: 'https://cdn.shopify.com/3d/models/b04d6ab77c573e10/jbl_xtreme_3.glb',
+      imageSrc: '/images/products/speaker.png',
       cameraOrbit: '5deg 80deg',
-      scale: 'scale-[1]',
+      scale: 'scale-[0.65]',
       rotation: 'rotate-0',
       yOffset: 'translate-y-0',
       xOffset: 'translate-x-0',
@@ -420,10 +428,14 @@ const Hero = () => {
         </div>
       </div>
 
+      {/* Add scroll-friendly areas to the sides of the shelf */}
+      <div className="fixed left-0 top-0 bottom-0 w-[10%] z-[5]" />
+      <div className="fixed right-0 top-0 bottom-0 w-[10%] z-[5]" />
+
       {/* Shelf 3D model in background - Centered for mobile */}
       {modelsLoaded && (
         <div 
-          className="absolute w-full h-full z-[10] shelf-container"
+          className="absolute w-full h-full z-[10] shelf-container pointer-events-none"
           style={{ 
             top: isMobile ? '25%' : '7%',
             right: isMobile ? '0%' : '-14.1%',
@@ -534,7 +546,7 @@ const Hero = () => {
                   </div>
                 )}
                 
-                {/* Model container */}
+                {/* Image container */}
                 <div 
                   className={`absolute inset-0 cursor-pointer transition-transform duration-300 pointer-events-auto
                             ${model.highlight && animatingModels ? 'model-zoom-animation' : ''}`}
@@ -543,43 +555,13 @@ const Hero = () => {
                     setTooltipDismissed(true);
                     setShowTooltip(false);
                   }}
+                  style={model.id === 1 ? { transform: 'rotate(0deg)' } : undefined}
                 >
-                  <model-viewer
-                    className={`model-viewer-shadow model-viewer-no-ui ${model.highlight && animatingModels ? 'brightness-125' : ''}`}
-                    src={model.modelSrc}
-                    camera-controls
-                    auto-rotate
-                    rotation-per-second="0deg"
-                    interaction-prompt="none"
-                    camera-orbit={model.cameraOrbit}
-                    min-camera-orbit="auto auto auto"
-                    max-camera-orbit="auto auto auto"
-                    disable-zoom
-                    ui-info="no"
-                    ar-status="not-presenting"
-                    show-annotations="false"
-                    environment-image="neutral"
-                    enable-pan="false"
-                    reveal="auto"
-                    shadow-intensity="0.5"
-                    shadow-softness="2"
-                    exposure="1"
-                    field-of-view="35deg"
-                  >
-                    <div 
-                      style={{
-                        position: 'absolute',
-                        width: '100%',
-                        height: '2px',
-                        background: 'transparent',
-                        bottom: '-5px',
-                        left: 0,
-                        right: 0,
-                        zIndex: 10
-                      }}
-                      slot="shadow-root"
-                    ></div>
-                  </model-viewer>
+                  <img
+                    src={model.imageSrc}
+                    alt={`Product ${model.id}`}
+                    className={`w-full h-full object-cover rounded-lg shadow-lg ${model.highlight && animatingModels ? 'brightness-125' : ''}`}
+                  />
                 </div>
               </div>
             </div>
